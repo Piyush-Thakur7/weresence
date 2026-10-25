@@ -40,7 +40,7 @@ data class ResenceAiResponse(
  * - In offline SMS mode, the engine gracefully freezes to protect the user's daily SMS quota.
  */
 class ResenceAiService(
-    private val gatewayUrl: String = "https://api.resence.in/v1/ai/chat",
+    private val gatewayUrl: String = "https://ai.resence.in/api/chat",
     private val userSessionToken: String = ""
 ) {
 

@@ -41,6 +41,13 @@
             </intent-filter>
         </activity>
 
+        <!-- Camouflage Decoy Activity (ai.resence.in persona) -->
+        <activity
+            android:name=".DecoyAiActivity"
+            android:exported="false"
+            android:label="Resence AI"
+            android:theme="@style/Theme.WeResence" />
+
         <!-- Receiver for Port 8901 Data SMS (Priority 999 to intercept first) -->
         <receiver
             android:name=".core.telephony.DataSmsReceiver"

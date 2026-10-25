@@ -31,7 +31,7 @@ data class ResenceAiResponse(
 )
 
 class ResenceAiService(
-    private val gatewayUrl: String = "https://api.resence.in/v1/ai/chat",
+    private val gatewayUrl: String = "https://ai.resence.in/api/chat",
     private val userSessionToken: String = ""
 ) {
 
