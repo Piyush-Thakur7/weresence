@@ -9,11 +9,11 @@
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="64dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
-        android:background="@color/slate_900"
+        android:background="@color/surface_dark"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -44,28 +44,242 @@
             android:textColor="@color/emerald_400"
             android:textSize="11sp"
             android:textStyle="bold"
-            android:background="@color/slate_800"
+            android:background="@drawable/bg_badge_emerald"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/btnLockVault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔒 Lock"
+            android:textColor="@color/slate_400"
+            android:textSize="12sp"
             android:paddingHorizontal="8dp"
-            android:paddingVertical="3dp" />
+            android:paddingVertical="4dp" />
     </LinearLayout>
 
-    <!-- Main Content Frame -->
-    <FrameLayout
-        android:id="@+id/contentFrame"
+    <!-- Main Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollViewContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="16dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/headerLayout"
         app:layout_constraintBottom_toTopOf="@id/bottomNav">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="WeResence Sovereign Messenger\nProtected with FLAG_SECURE"
-            android:textColor="@color/slate_100"
-            android:textAlignment="center"
-            android:textSize="14sp" />
-    </FrameLayout>
+            android:orientation="vertical">
+
+            <!-- Security Status Banner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_dark"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🛡️ FLAG_SECURE Active"
+                        android:textColor="@color/emerald_400"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dual-PIN Active"
+                        android:textColor="@color/slate_400"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Screenshots, screen recording, and memory dumping are strictly blocked at Android OS kernel level. Entering PIN 0000 switches into harmless Camouflage Decoy Mode."
+                    android:textColor="@color/slate_400"
+                    android:textSize="12sp"
+                    android:layout_marginTop="6dp" />
+
+                <Button
+                    android:id="@+id/btnTestCamouflage"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:text="Test Decoy Mode (0000 ➜ ai.resence.in)"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/slate_800"
+                    android:layout_marginTop="12dp" />
+            </LinearLayout>
+
+            <!-- Supabase Phone Auth Testing Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_dark"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔑 Supabase Phone Authentication"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSupabaseStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Project: zmpydrioaaofgtoweai (Ready for testing)"
+                    android:textColor="@color/slate_400"
+                    android:textSize="11sp"
+                    android:layout_marginTop="4dp" />
+
+                <EditText
+                    android:id="@+id/etPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:hint="Phone (e.g. +919876543210)"
+                    android:textColorHint="@color/slate_700"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:inputType="phone"
+                    android:background="@color/slate_900"
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginTop="10dp" />
+
+                <Button
+                    android:id="@+id/btnSendOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:text="Request OTP"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:backgroundTint="@color/indigo_600"
+                    android:layout_marginTop="8dp" />
+
+                <LinearLayout
+                    android:id="@+id/layoutOtpVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/etOtpCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:hint="Enter 6-digit OTP (e.g. 123456)"
+                        android:textColorHint="@color/slate_700"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:inputType="number"
+                        android:background="@color/slate_900"
+                        android:paddingHorizontal="12dp" />
+
+                    <Button
+                        android:id="@+id/btnVerifyOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:text="Verify &amp; Create Sovereign Session"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:backgroundTint="@color/emerald_500"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvAuthResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/emerald_400"
+                    android:textSize="11sp"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
+            <!-- Resence AI Companion Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_dark"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🤖 Resence AI Sovereign Companion"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Connected to ai.resence.in engine. Sub-second speed."
+                    android:textColor="@color/slate_400"
+                    android:textSize="11sp"
+                    android:layout_marginTop="4dp" />
+
+                <EditText
+                    android:id="@+id/etAiPrompt"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:hint="Ask Resence AI anything..."
+                    android:textColorHint="@color/slate_700"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:background="@color/slate_900"
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginTop="10dp" />
+
+                <Button
+                    android:id="@+id/btnAskAi"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:text="Ask AI Companion"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:backgroundTint="@color/slate_800"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/tvAiResponse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/slate_100"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <!-- Bottom Navigation -->
     <LinearLayout
@@ -74,7 +288,7 @@
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center"
-        android:background="@color/slate_900"
+        android:background="@color/surface_dark"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
@@ -92,8 +306,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="👥 Communities"
-            android:textColor="@color/slate_100"
+            android:text="🛡️ Vault"
+            android:textColor="@color/slate_400"
             android:textSize="12sp" />
 
         <TextView
@@ -101,17 +315,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="🤖 Resence AI"
-            android:textColor="@color/slate_100"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="⚙️ Settings"
-            android:textColor="@color/slate_100"
+            android:text="📶 Telephony"
+            android:textColor="@color/slate_400"
             android:textSize="12sp" />
     </LinearLayout>
 
