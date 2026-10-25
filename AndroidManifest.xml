@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.resence.stealthchat">
+    package="com.resence.weresence">
 
     <!-- Permissions Required -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,8 +10,10 @@
 
     <application
         android:allowBackup="false"
-        android:label="StealthChat"
-        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        android:label="WeResence"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/Theme.MaterialComponents.NoActionBar">
 
         <!-- Invisible Port-Directed Data SMS Receiver -->
         <!-- Listens EXCLUSIVELY on Port 8901 for binary packets -->

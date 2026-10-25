@@ -3,6 +3,7 @@ package com.resence.weresence
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.resence.weresence.core.network.ConnectionManager
 import com.resence.weresence.core.network.TransportMode
 
@@ -11,6 +12,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var connectionManager: ConnectionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Enforce Strict OLED Dark Theme (Light mode disabled)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
         super.onCreate(savedInstanceState)
 
         // 1. Enforce Anti-Screenshot & Anti-Screen Recording Across Entire App
