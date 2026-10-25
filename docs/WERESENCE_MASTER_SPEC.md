@@ -46,3 +46,18 @@ Directly integrated from Piyush's `aiassistant` stack:
 * **Ghost Mode:** Dual-PIN authentication:
   * Master PIN (`1234`): Unlocks real encrypted chats.
   * Decoy PIN (`0000`): Unlocks fake harmless screen with dummy conversations.
+
+---
+
+### 👥 5. Groups & Communities Architecture (100% Online Rule)
+* **Strict Online Isolation:**
+  * **Groups and Communities run 100% ONLINE ONLY (Wi-Fi / Mobile Data).**
+  * **Offline stealth SMS logic is strictly isolated to 1-on-1 direct conversations.**
+  * *Reason:* Sending a group message offline to 50 members would require 50 individual carrier SMS messages, burning the user's 100 daily SMS limit in 2 sends. By isolating SMS to 1-on-1 chats, the user's daily carrier quota is 100% protected.
+* **Community Hierarchy (WhatsApp Reverse-Engineered Model):**
+  * **Parent Community:** e.g. "GLBIM Greater Noida" (`is_parent: true`)
+  * **Announcement Channel:** Only admins can broadcast college-wide notices (`announcement_only: true`).
+  * **Sub-Groups:** Topic-based class groups (e.g. "BCA AI/ML Sem 3", "Hackathon Lab").
+* **Offline Behavior in Groups:**
+  * Shows a subtle WhatsApp inline badge: `[ 📡 Groups paused while offline • 1-on-1 DMs active ]`.
+  * All incoming group chats sync silently the second internet reconnects.
