@@ -1,0 +1,428 @@
+<!-- Copy of Interactive WeResence UI Prototype in Workspace -->
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeResence — Sovereign Messenger & AI</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    * {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease, opacity 0.2s ease;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(124, 77, 255, 0.6), inset 0 0 10px rgba(124, 77, 255, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(0, 230, 118, 0.7), inset 0 0 15px rgba(0, 230, 118, 0.4);
+      }
+    }
+    .ai-glow-active {
+      animation: pulse-glow 3s infinite ease-in-out;
+      border: 2px solid transparent;
+      background-image: linear-gradient(#151921, #151921), linear-gradient(135deg, #7c4dff, #00e676, #00b0ff);
+      background-origin: border-box;
+      background-clip: content-box, border-box;
+    }
+    .light .ai-glow-active {
+      background-image: linear-gradient(#ffffff, #ffffff), linear-gradient(135deg, #6366f1, #10b981, #06b6d4);
+    }
+    .ai-grey-disabled {
+      filter: grayscale(100%);
+      opacity: 0.45;
+      border: 2px solid #6b7280 !important;
+      box-shadow: none !important;
+      animation: none !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-3 md:p-6 flex flex-col items-center justify-center">
+
+  <div class="w-full max-w-4xl bg-slate-900/90 light:bg-white border border-slate-800 light:border-slate-200 rounded-2xl p-4 mb-5 shadow-xl flex flex-wrap items-center justify-between gap-4 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
+        W
+      </div>
+      <div>
+        <h1 class="text-base font-bold text-white light:text-slate-900 tracking-wide">WeResence Design System</h1>
+        <p class="text-xs text-slate-400 light:text-slate-500">Interactive Prototype v1.0 • Built for Piyush Singh</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button id="themeToggleBtn" onclick="toggleTheme()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 light:bg-slate-100 text-slate-200 light:text-slate-800 border border-slate-700 light:border-slate-300 hover:scale-105 active:scale-95 transition-all">
+        <span id="themeIcon">☀️</span>
+        <span id="themeLabel">Light Mode</span>
+      </button>
+
+      <button id="networkToggleBtn" onclick="toggleNetwork()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:scale-105 active:scale-95 transition-all">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span id="networkLabel">Network: ONLINE (5G/Wi-Fi)</span>
+      </button>
+
+      <button onclick="openGhostModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-500/20 text-indigo-400 border border-indigo-500/40 hover:scale-105 active:scale-95 transition-all">
+        👻 Test Ghost PIN
+      </button>
+    </div>
+  </div>
+
+  <div class="w-full max-w-md h-[780px] bg-slate-950 light:bg-slate-50 border-4 border-slate-800 light:border-slate-300 rounded-[40px] shadow-2xl flex flex-col overflow-hidden relative">
+
+    <div class="w-full px-6 pt-3 pb-2 flex justify-between items-center text-[11px] font-semibold text-slate-400 light:text-slate-600 bg-slate-900 light:bg-slate-100">
+      <span id="liveClock">17:25</span>
+      <div class="flex items-center gap-1.5">
+        <span id="statusNetworkIcon">5G</span>
+        <span id="statusTransportIcon">⚡</span>
+        <span class="text-xs">🔋 98%</span>
+      </div>
+    </div>
+
+    <header class="w-full px-4 py-3 bg-slate-900/90 light:bg-white/90 border-b border-slate-800 light:border-slate-200 flex items-center justify-between backdrop-blur-md">
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <div id="aiHeaderRing" class="w-10 h-10 rounded-full ai-glow-active flex items-center justify-center p-0.5 cursor-pointer" onclick="openAiChat()">
+            <div class="w-full h-full rounded-full bg-slate-900 light:bg-slate-100 flex items-center justify-center text-sm font-bold text-indigo-400 light:text-indigo-600">
+              🤖
+            </div>
+          </div>
+          <span id="aiActiveDot" class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
+        </div>
+        <div>
+          <h2 class="text-sm font-bold text-white light:text-slate-900 flex items-center gap-1.5">
+            WeResence
+            <span id="transportBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              🟢 ONLINE
+            </span>
+          </h2>
+          <p id="transportSubtext" class="text-[11px] text-slate-400 light:text-slate-500">
+            E2EE Active • Zero Cloud Retention
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="alert('FLAG_SECURE Active: Anti-screenshot & Screen-Recording 100% blocked on this device.')" class="w-8 h-8 rounded-full bg-slate-800 light:bg-slate-100 text-slate-300 light:text-slate-700 flex items-center justify-center text-xs" title="Anti-Screenshot Protection Active">
+          🛡️
+        </button>
+      </div>
+    </header>
+
+    <main id="chatMessagesContainer" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-950 light:bg-slate-100">
+      
+      <div class="text-center my-2">
+        <span class="text-[10px] uppercase tracking-wider px-3 py-1 rounded-full bg-slate-900 light:bg-slate-200 text-slate-400 light:text-slate-600 border border-slate-800 light:border-slate-300 font-medium">
+          Encrypted Vault Session • Port 8901 Guard
+        </span>
+      </div>
+
+      <div id="aiWelcomeBubble" class="flex items-start gap-2 max-w-[85%]">
+        <div class="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs shrink-0 mt-1">
+          🤖
+        </div>
+        <div class="bg-slate-900 light:bg-white border border-slate-800 light:border-slate-200 rounded-2xl rounded-tl-sm p-3 shadow-sm">
+          <p class="text-xs font-semibold text-indigo-400 light:text-indigo-600 mb-0.5">Resence AI (Meta AI Style)</p>
+          <p class="text-xs text-slate-200 light:text-slate-800 leading-relaxed">
+            Namaste Piyush! Mai aapka built-in Resence AI companion hoon. Jab internet ON rahega, aap mujhse koi bhi academic sawal, vision image breakdown ya code pooch sakte hain!
+          </p>
+          <span class="text-[9px] text-slate-500 block text-right mt-1">17:20</span>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-2 max-w-[85%]">
+        <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs shrink-0 mt-1">
+          P
+        </div>
+        <div class="bg-slate-900 light:bg-white border border-slate-800 light:border-slate-200 rounded-2xl rounded-tl-sm p-3 shadow-sm">
+          <p class="text-xs font-semibold text-emerald-400 light:text-emerald-600 mb-0.5">Rahul (Delhi)</p>
+          <p class="text-xs text-slate-200 light:text-slate-800 leading-relaxed">
+            Bhai, kal ke college ke DBMS assignment ke queries ready ho gaye?
+          </p>
+          <span class="text-[9px] text-slate-500 block text-right mt-1">17:21</span>
+        </div>
+      </div>
+
+      <div class="flex items-end justify-end gap-2 ml-auto max-w-[85%] group">
+        <div class="bg-emerald-800 light:bg-emerald-600 text-white rounded-2xl rounded-tr-sm p-3 shadow-sm relative">
+          <p class="text-xs leading-relaxed">
+            Haan bhai, 52 practical queries poori solve ho gayi hain. Abhi send kar raha hoon!
+          </p>
+          <div class="flex items-center justify-end gap-1 mt-1">
+            <span class="text-[9px] text-emerald-200">17:22</span>
+            <span id="msgTick" class="text-[10px] text-emerald-300 font-bold">✓✓</span>
+          </div>
+        </div>
+        <button onclick="testDeleteForEveryone(this)" class="opacity-0 group-hover:opacity-100 text-[10px] text-slate-500 hover:text-red-400 transition-all p-1" title="Delete for Everyone">
+          🗑️
+        </button>
+      </div>
+
+      <div id="offlineNoticeBanner" class="hidden text-center my-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs flex items-center justify-center gap-2">
+        <span>⚡</span>
+        <span><b>Offline Mode:</b> Stealth Text SMS Active (Port 8901). Media & AI locked.</span>
+      </div>
+
+      <div id="aiOfflineMutedBox" class="hidden p-3 rounded-xl bg-slate-900/60 light:bg-slate-200/60 border border-slate-800 light:border-slate-300 text-slate-500 text-xs flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-slate-800 light:bg-slate-300 text-slate-500 flex items-center justify-center font-bold">
+          🤖
+        </div>
+        <div>
+          <p class="font-semibold text-slate-400 light:text-slate-600">Resence AI is Offline</p>
+          <p class="text-[11px] text-slate-500">AI messages do not queue. Connect to internet to activate.</p>
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="p-3 bg-slate-900 light:bg-white border-t border-slate-800 light:border-slate-200">
+      <div class="flex items-center justify-between text-[10px] px-1 mb-2 text-slate-400 light:text-slate-500">
+        <span id="activeTransportLabel">Transport: 🟢 WebSocket TLS 1.3</span>
+        <span id="mediaStatusLabel">Media: All Unlocked</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="btnCamera" onclick="handleMediaClick('Photo / Camera')" class="w-10 h-10 rounded-full bg-slate-800 light:bg-slate-100 text-slate-300 light:text-slate-700 flex items-center justify-center hover:bg-slate-700 transition-all shrink-0 relative" title="Take / Send Photo">
+          📷
+          <span id="lockCamera" class="hidden absolute top-0.5 right-0.5 text-[10px]">🔒</span>
+        </button>
+
+        <button id="btnVideo" onclick="handleMediaClick('Video / Gallery')" class="w-10 h-10 rounded-full bg-slate-800 light:bg-slate-100 text-slate-300 light:text-slate-700 flex items-center justify-center hover:bg-slate-700 transition-all shrink-0 relative" title="Send Video">
+          🎥
+          <span id="lockVideo" class="hidden absolute top-0.5 right-0.5 text-[10px]">🔒</span>
+        </button>
+
+        <div class="flex-1 relative">
+          <input id="chatInputBox" type="text" placeholder="Type an encrypted message..." class="w-full py-2.5 px-3.5 bg-slate-950 light:bg-slate-100 border border-slate-800 light:border-slate-300 rounded-full text-xs text-white light:text-slate-900 focus:outline-none focus:border-emerald-500 transition-all placeholder-slate-500">
+        </div>
+
+        <button id="btnSend" onclick="sendMessage()" class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm shadow-md hover:bg-emerald-400 transition-all shrink-0">
+          ➤
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <div id="ghostModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 light:bg-white border border-slate-800 light:border-slate-200 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center">
+      <div class="w-14 h-14 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-2xl mx-auto mb-3">
+        👻
+      </div>
+      <h3 class="text-base font-bold text-white light:text-slate-900 mb-1">Ghost Mode Vault Authentication</h3>
+      <p class="text-xs text-slate-400 light:text-slate-600 mb-4">
+        Test entering the Master PIN or Decoy PIN to see how the vault reacts.
+      </p>
+
+      <div class="space-y-3 mb-5">
+        <div class="p-3 bg-slate-950 light:bg-slate-100 rounded-xl text-left text-xs border border-slate-800 light:border-slate-200">
+          <p class="font-bold text-emerald-400 light:text-emerald-600">PIN: 1234 (Master PIN)</p>
+          <p class="text-[11px] text-slate-400">Unlocks true encrypted secret chats.</p>
+        </div>
+        <div class="p-3 bg-slate-950 light:bg-slate-100 rounded-xl text-left text-xs border border-slate-800 light:border-slate-200">
+          <p class="font-bold text-amber-400 light:text-amber-600">PIN: 0000 (Decoy Fake PIN)</p>
+          <p class="text-[11px] text-slate-400">Unlocks harmless dummy college assignment chats.</p>
+        </div>
+      </div>
+
+      <input id="pinInputField" type="password" maxlength="4" placeholder="Enter 4-digit PIN" class="w-full py-2.5 text-center text-lg tracking-widest font-bold bg-slate-950 light:bg-slate-100 border border-slate-700 light:border-slate-300 rounded-xl text-white light:text-slate-900 focus:outline-none focus:border-indigo-500 mb-4">
+
+      <div class="flex gap-2">
+        <button onclick="closeGhostModal()" class="flex-1 py-2 rounded-xl text-xs font-semibold bg-slate-800 light:bg-slate-200 text-slate-300 light:text-slate-700">
+          Cancel
+        </button>
+        <button onclick="verifyGhostPin()" class="flex-1 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-md hover:bg-indigo-500">
+          Unlock Vault
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isDarkMode = true;
+    let isOnline = true;
+
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+
+      if (isDarkMode) {
+        html.classList.add('dark');
+        html.classList.remove('light');
+        document.body.className = "bg-slate-950 text-slate-100 min-h-screen p-3 md:p-6 flex flex-col items-center justify-center";
+        icon.textContent = "☀️";
+        label.textContent = "Light Mode";
+      } else {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        document.body.className = "bg-slate-100 text-slate-900 min-h-screen p-3 md:p-6 flex flex-col items-center justify-center";
+        icon.textContent = "🌙";
+        label.textContent = "Dark Mode";
+      }
+    }
+
+    function toggleNetwork() {
+      isOnline = !isOnline;
+
+      const netBtn = document.getElementById('networkToggleBtn');
+      const netLabel = document.getElementById('networkLabel');
+      const transportBadge = document.getElementById('transportBadge');
+      const transportSubtext = document.getElementById('transportSubtext');
+      const aiRing = document.getElementById('aiHeaderRing');
+      const aiDot = document.getElementById('aiActiveDot');
+      const offlineBanner = document.getElementById('offlineNoticeBanner');
+      const aiMutedBox = document.getElementById('aiOfflineMutedBox');
+      const activeTransportLabel = document.getElementById('activeTransportLabel');
+      const mediaStatusLabel = document.getElementById('mediaStatusLabel');
+      const statusNetIcon = document.getElementById('statusNetworkIcon');
+
+      const lockCamera = document.getElementById('lockCamera');
+      const lockVideo = document.getElementById('lockVideo');
+      const btnCamera = document.getElementById('btnCamera');
+      const btnVideo = document.getElementById('btnVideo');
+
+      if (isOnline) {
+        netBtn.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:scale-105 active:scale-95 transition-all";
+        netLabel.textContent = "Network: ONLINE (5G/Wi-Fi)";
+        statusNetIcon.textContent = "5G";
+
+        transportBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+        transportBadge.textContent = "🟢 ONLINE";
+        transportSubtext.textContent = "E2EE Active • Zero Cloud Retention";
+
+        aiRing.className = "w-10 h-10 rounded-full ai-glow-active flex items-center justify-center p-0.5 cursor-pointer";
+        aiDot.className = "absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-slate-900 rounded-full";
+
+        offlineBanner.classList.add('hidden');
+        aiMutedBox.classList.add('hidden');
+
+        activeTransportLabel.textContent = "Transport: 🟢 WebSocket TLS 1.3";
+        mediaStatusLabel.textContent = "Media: All Unlocked";
+
+        lockCamera.classList.add('hidden');
+        lockVideo.classList.add('hidden');
+        btnCamera.classList.remove('opacity-40');
+        btnVideo.classList.remove('opacity-40');
+      } else {
+        netBtn.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:scale-105 active:scale-95 transition-all";
+        netLabel.textContent = "Network: OFFLINE (Stealth SMS)";
+        statusNetIcon.textContent = "SMS";
+
+        transportBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30";
+        transportBadge.textContent = "⚡ OFFLINE";
+        transportSubtext.textContent = "Stealth Port 8901 SMS • 0% Inbox Leak";
+
+        aiRing.className = "w-10 h-10 rounded-full ai-grey-disabled flex items-center justify-center p-0.5 cursor-not-allowed";
+        aiDot.className = "absolute bottom-0 right-0 w-3 h-3 bg-slate-500 border-2 border-slate-900 rounded-full";
+
+        offlineBanner.classList.remove('hidden');
+        aiMutedBox.classList.remove('hidden');
+
+        activeTransportLabel.textContent = "Transport: ⚡ Data SMS Port 8901";
+        mediaStatusLabel.textContent = "Media: LOCKED 🔒";
+
+        lockCamera.classList.remove('hidden');
+        lockVideo.classList.remove('hidden');
+        btnCamera.classList.add('opacity-40');
+        btnVideo.classList.add('opacity-40');
+      }
+    }
+
+    function handleMediaClick(mediaType) {
+      if (!isOnline) {
+        alert("🔒 " + mediaType + " is LOCKED in Offline Mode!\n\nReason: Heavy media requires internet. Your Text Chat remains 100% active via Stealth SMS.");
+      } else {
+        alert("📷 " + mediaType + " Picker opened!\n\nSelected file will be AES-256 encrypted and streamed via Cloudflare R2.");
+      }
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chatInputBox');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('chatMessagesContainer');
+      const bubble = document.createElement('div');
+      bubble.className = "flex items-end justify-end gap-2 ml-auto max-w-[85%] group";
+
+      const tickSymbol = isOnline ? "✓✓" : "⚡";
+      const tickColor = isOnline ? "text-emerald-300" : "text-amber-300";
+      const bgTheme = isOnline ? "bg-emerald-800 light:bg-emerald-600" : "bg-amber-800 light:bg-amber-600";
+
+      bubble.innerHTML = `
+        <div class="${bgTheme} text-white rounded-2xl rounded-tr-sm p-3 shadow-sm relative">
+          <p class="text-xs leading-relaxed">${escapeHtml(text)}</p>
+          <div class="flex items-center justify-end gap-1 mt-1">
+            <span class="text-[9px] opacity-75">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+            <span class="text-[10px] ${tickColor} font-bold">${tickSymbol}</span>
+          </div>
+        </div>
+        <button onclick="testDeleteForEveryone(this)" class="opacity-0 group-hover:opacity-100 text-[10px] text-slate-500 hover:text-red-400 transition-all p-1" title="Delete for Everyone">
+          🗑️
+        </button>
+      `;
+
+      container.appendChild(bubble);
+      input.value = "";
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function testDeleteForEveryone(btn) {
+      const parent = btn.closest('.group');
+      const transportUsed = isOnline ? "Cloud WebSocket" : "Port 8901 Silent SMS Kill Signal";
+      
+      const confirmDelete = confirm("Delete this message for everyone?\n\n(Revoke signal will dispatch via " + transportUsed + ")");
+      if (confirmDelete) {
+        parent.innerHTML = `
+          <div class="bg-slate-900 light:bg-slate-200 border border-slate-800 light:border-slate-300 text-slate-400 light:text-slate-600 italic text-[11px] rounded-2xl p-2.5 shadow-sm">
+            🚫 You deleted this message
+          </div>
+        `;
+      }
+    }
+
+    function openGhostModal() {
+      document.getElementById('ghostModal').classList.remove('hidden');
+      document.getElementById('ghostModal').classList.add('flex');
+      document.getElementById('pinInputField').value = "";
+      document.getElementById('pinInputField').focus();
+    }
+
+    function closeGhostModal() {
+      document.getElementById('ghostModal').classList.add('hidden');
+      document.getElementById('ghostModal').classList.remove('flex');
+    }
+
+    function verifyGhostPin() {
+      const pin = document.getElementById('pinInputField').value;
+      closeGhostModal();
+
+      if (pin === "1234") {
+        alert("🔓 MASTER PIN VERIFIED!\n\nUnlocking true sovereign encrypted chats database.");
+      } else if (pin === "0000") {
+        alert("👻 DECOY GHOST PIN TRIGGERED!\n\nSwitching to Fake Dummy Vault: Displaying benign college assignment chats.");
+      } else {
+        alert("❌ Incorrect PIN. Vault remains locked.");
+      }
+    }
+
+    function openAiChat() {
+      if (!isOnline) {
+        alert("⚠️ Resence AI is OFFLINE!\n\nAI queries do not queue offline. Please connect to internet to activate Resence AI.");
+      } else {
+        alert("🤖 Resence AI Active!\n\nPowered by Gemini 2.5 Flash & Groq Llama 3.3 70B (500 tokens/sec).");
+      }
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    document.getElementById('chatInputBox').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+</body>
+</html>
