@@ -102,3 +102,23 @@ Directly integrated from Piyush's `aiassistant` stack:
      * Manage local encrypted media cache (`.nomedia`)
   7. **Log Out**:
      * Unlocks/locks device session, securely signs out, requiring phone verification to re-enter.
+
+---
+
+### 🔐 7. Mutual Private Vault Gallery (1-on-1 Chats)
+* **Access Pathway:**
+  * Open any 1-on-1 chat -> Tap the **Top Header** (Profile Photo, Name, Status) -> Opens Contact Profile Screen.
+  * Scroll to the bottom -> Tap **"🔒 Mutual Private Gallery"**.
+* **Dual Independent Passwords:**
+  * Neither user knows or shares the other's password!
+  * **User A sets their own custom PIN/Password** to unlock the gallery on their phone.
+  * **User B sets their own custom PIN/Password** to unlock the gallery on their phone.
+  * If someone snoops on User A's phone, they cannot open the Mutual Gallery without User A's private password.
+* **Ownership & Deletion Governance (Anti-Griefing):**
+  * Both users can upload/drop photos and videos into this shared vault.
+  * **Delete Permission is Strictly Uploader-Only**:
+    * If User A uploads Photo 1 -> User A can delete Photo 1 anytime. User B can ONLY view it, User B CANNOT delete it.
+    * If User B uploads Video 2 -> User B can delete Video 2 anytime. User A can ONLY view it, User A CANNOT delete it.
+* **Absolute Protection:**
+  * Anti-Screenshot & Screen Recording (`FLAG_SECURE`) strictly enforced inside the Mutual Gallery.
+  * Files are stored in encrypted app sandbox with `.enc` extension, completely invisible to the phone's public Android Gallery/Google Photos.

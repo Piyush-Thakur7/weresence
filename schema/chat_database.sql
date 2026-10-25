@@ -61,6 +61,29 @@ CREATE TABLE IF NOT EXISTS user_settings (
     setting_value TEXT NOT NULL
 );
 
+-- 6. MUTUAL PRIVATE VAULT GALLERY (1-on-1 Shared Secret Vault)
+CREATE TABLE IF NOT EXISTS mutual_vault_gallery (
+    media_id TEXT PRIMARY KEY,
+    thread_id TEXT NOT NULL,
+    uploader_phone TEXT NOT NULL,            -- Only uploader has permission to delete! Peer can only view.
+    media_type TEXT NOT NULL,                -- 'PHOTO', 'VIDEO'
+    encrypted_local_uri TEXT NOT NULL,       -- Stored in sandbox (.enc)
+    remote_cloud_url TEXT,
+    thumbnail_blob BLOB,
+    file_size_bytes INTEGER DEFAULT 0,
+    caption TEXT,
+    uploaded_at INTEGER NOT NULL,
+    FOREIGN KEY(thread_id) REFERENCES conversations(thread_id) ON DELETE CASCADE
+);
+
+-- 7. MUTUAL VAULT AUTH (Independent Custom Password)
+CREATE TABLE IF NOT EXISTS mutual_vault_auth (
+    thread_id TEXT PRIMARY KEY,
+    personal_vault_password_hash TEXT NOT NULL, -- User's own secret password for this chat's vault
+    created_at INTEGER NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_messages_thread ON messages(thread_id);
 CREATE INDEX IF NOT EXISTS idx_messages_timestamp ON messages(timestamp);
 CREATE INDEX IF NOT EXISTS idx_contacts_phone ON contacts(phone_number);
+CREATE INDEX IF NOT EXISTS idx_mutual_vault_thread ON mutual_vault_gallery(thread_id);
