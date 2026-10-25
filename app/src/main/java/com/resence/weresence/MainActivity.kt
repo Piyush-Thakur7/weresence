@@ -122,6 +122,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, DecoyAiActivity::class.java)
             startActivity(intent)
         }
+
+        // Open Sovereign Dual Authentication Screen (Google + Phone)
+        findViewById<View>(R.id.btnOpenOnboarding)?.setOnClickListener {
+            val intent = Intent(this, AuthActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupSupabaseAuth() {

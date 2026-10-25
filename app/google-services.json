@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "117731315022",
+    "project_id": "weresence",
+    "storage_bucket": "weresence.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117731315022:android:881f9f9b4ef9a1f118621f",
+        "android_client_info": {
+          "package_name": "com.resence.weresence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaIXJuGRkxZ1w0Ojb3GN7dY4XQLD_HE-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

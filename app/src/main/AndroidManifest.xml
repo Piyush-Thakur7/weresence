@@ -46,6 +46,12 @@
             android:name=".PrivateGalleryActivity"
             android:exported="false" />
 
+        <!-- Sovereign Onboarding (Google SSO + Free Phone SMS) -->
+        <activity
+            android:name=".AuthActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
         <!-- Camouflage Decoy Activity (ai.resence.in persona) -->
         <activity
             android:name=".DecoyAiActivity"
