@@ -122,3 +122,24 @@ Directly integrated from Piyush's `aiassistant` stack:
 * **Absolute Protection:**
   * Anti-Screenshot & Screen Recording (`FLAG_SECURE`) strictly enforced inside the Mutual Gallery.
   * Files are stored in encrypted app sandbox with `.enc` extension, completely invisible to the phone's public Android Gallery/Google Photos.
+
+---
+
+### 📞 8. Sovereign Voice Calling & India Telecom Edge-Case Engine
+* **Dual Calling Modes:**
+  * **Online Voice Call (VoIP / WebRTC):** High-definition, end-to-end encrypted voice call over internet/Wi-Fi. Zero carrier charges.
+  * **Offline Voice Call (SIM Fallback):** Direct carrier call fallback when no internet is present.
+* **Invisible Call Log (0% Native Phone Log Leak):**
+  * Normal Android dialers (Google Phone / Samsung Phone) have **ZERO trace** of WeResence calls.
+  * Online VoIP calls never touch Android's telephony stack.
+  * For offline SIM calls, WeResence automatically scrubs the call record from Android's `CallLog.Calls` database immediately upon hangup, keeping call logs 100% inside the app's encrypted private vault.
+* **Telecom Edge Cases (The India No-Recharge & Wi-Fi Reality Matrix):**
+  1. **Case 1: Person B has NO SIM Recharge, but is on Wi-Fi:**
+     * *Behavior:* WeResence auto-detects Wi-Fi as `ONLINE`. Full VoIP voice calls and unlimited multimedia chats work 100% free with zero carrier balance needed.
+  2. **Case 2: Person B has NO SIM Recharge & NO Wi-Fi (Within 60-Day TRAI Window):**
+     * *Incoming SMS:* TRAI mandates incoming SMS remains active. Person B physically receives Person A's stealth SMS on Port 8901 and reads the message in WeResence.
+     * *Outgoing Reply:* Since Person B cannot send outgoing SMS without balance, WeResence automatically holds the reply in a local **Smart Outbox** with inline badge: `[ ⚠️ Outbox: Connect to Wi-Fi to deliver ]`. The second Person B reaches college Wi-Fi or home hotspot, the outbox dispatches automatically!
+  3. **Case 3: Offline Voice Call Attempt with Zero SIM Balance:**
+     * If user has no carrier balance for an offline phone call, WeResence dispatches a silent 1-byte SMS ping: *"Missed call ping. Connect to Wi-Fi for free HD call"*.
+  4. **Case 4: SIM Permanently Deactivated / No Incoming Signal:**
+     * The cloud holds all pending messages. As soon as the device connects to ANY public/private Wi-Fi, all messages, calls, and notifications sync immediately with zero message loss.
