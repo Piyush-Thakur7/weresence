@@ -71,6 +71,13 @@ Directly integrated from Piyush's `aiassistant` stack:
   * If a contact has a phone number, you can chat with them immediately.
 * **`ResenceID` (@handle):**
   * Unique public alphanumeric username (e.g. `@piyush`) used for mentions, community roles, and AI tagging.
+* **Contact Discovery & Invite Loop (The WhatsApp Growth Model):**
+  * **Contacts on WeResence:**
+    * When opening the contact list, the phonebook numbers are checked to see which numbers have an active `ResenceID` registered.
+    * Only contacts with a registered `ResenceID` appear as chat-ready contacts (with their avatar, bio, and online/offline status).
+  * **Invite to WeResence (Viral Growth):**
+    * Phonebook contacts who do not have a `ResenceID` yet are listed under "Invite to WeResence".
+    * A 1-click "Invite" button generates a shareable invitation message and link (`https://weresence.resence.in`), copyable to WhatsApp, SMS, Instagram, etc.
 * **Profile Attributes:**
   * Profile Picture (Avatar)
   * Display Name
