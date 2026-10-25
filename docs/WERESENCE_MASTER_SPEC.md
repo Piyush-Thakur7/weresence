@@ -61,3 +61,37 @@ Directly integrated from Piyush's `aiassistant` stack:
 * **Offline Behavior in Groups:**
   * Shows a subtle WhatsApp inline badge: `[ 📡 Groups paused while offline • 1-on-1 DMs active ]`.
   * All incoming group chats sync silently the second internet reconnects.
+
+---
+
+### 👤 6. Identity, Profile & Settings Architecture
+* **Primary Key = Phone Number:**
+  * Exactly ONE unique WeResence profile per phone number.
+  * Contact matching works automatically via the user's phonebook (WhatsApp model).
+  * If a contact has a phone number, you can chat with them immediately.
+* **`ResenceID` (@handle):**
+  * Unique public alphanumeric username (e.g. `@piyush`) used for mentions, community roles, and AI tagging.
+* **Profile Attributes:**
+  * Profile Picture (Avatar)
+  * Display Name
+  * Verified Phone Number (Permanent Account Anchor)
+  * `ResenceID` (@handle)
+  * **User Bio / Status** (Custom text, e.g. "Available on WeResence")
+* **Linked Google Account:**
+  * Optional link for fast 1-tap re-login and encrypted Google Drive chat backups.
+* **Master Settings Screen Breakdown:**
+  1. **My Profile**: Edit photo, display name, and bio. View verified phone number and `ResenceID`.
+  2. **Linked Google Account**: Connect or disconnect Google account for cloud backup.
+  3. **Privacy & Vault**:
+     * Anti-Screenshot & Screen Recording (`FLAG_SECURE` - Always On)
+     * Vault PIN Configuration (Master PIN `1234` / Decoy Ghost PIN `0000`)
+     * Blocked Contacts
+  4. **Offline SIM & Telephony**:
+     * Dual-SIM selector (Choose SIM 1 or SIM 2 for offline SMS)
+     * Daily Offline SMS Meter (e.g. `84 / 100 used today`, auto-resets at midnight)
+  5. **Appearance**:
+     * Light Mode / Minimalist Dark Mode / OLED Pitch Black
+  6. **Storage & Data**:
+     * Manage local encrypted media cache (`.nomedia`)
+  7. **Log Out**:
+     * Unlocks/locks device session, securely signs out, requiring phone verification to re-enter.
