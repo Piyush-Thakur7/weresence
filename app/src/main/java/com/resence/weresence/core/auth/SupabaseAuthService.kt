@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  * - Uses publishable anon key. (Service role secret is strictly kept out of client binaries).
  */
 class SupabaseAuthService(
-    private val supabaseUrl: String = "https://zmpydrioaaofgtoweai.supabase.co",
+    private val supabaseUrl: String = "https://zmpydrioaaoafgtoweai.supabase.co",
     private val supabaseAnonKey: String = "sb_publishable_AZecz4QWSu-XIO7_ac5sHA_YH7AAPJD"
 ) {
 
