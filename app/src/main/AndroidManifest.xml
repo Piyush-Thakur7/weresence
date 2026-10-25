@@ -29,11 +29,22 @@
             </intent-filter>
         </activity>
 
-        <!-- Sovereign WeResence Main Interface -->
+        <!-- Sovereign WeResence Main Interface (Screenshots allowed here) -->
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- 1-on-1 Encrypted Chat Screen (FLAG_SECURE: Screenshots Prohibited) -->
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Private Sovereign Gallery (FLAG_SECURE: Screenshots Prohibited) -->
+        <activity
+            android:name=".PrivateGalleryActivity"
+            android:exported="false" />
 
         <!-- Camouflage Decoy Activity (ai.resence.in persona) -->
         <activity

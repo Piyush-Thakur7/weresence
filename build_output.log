@@ -1,0 +1,67 @@
+=== STDOUT ===
+Starting a Gradle Daemon, 1 incompatible and 1 stopped Daemons could not be reused, use --status for details
+Checking the license for package Android SDK Platform-Tools in C:\Users\HP\AppData\Local\Android\Sdk\licenses
+License for package Android SDK Platform-Tools accepted.
+Preparing "Install Android SDK Platform-Tools v.37.0.1".
+"Install Android SDK Platform-Tools v.37.0.1" ready.
+Installing Android SDK Platform-Tools in C:\Users\HP\AppData\Local\Android\Sdk\platform-tools
+"Install Android SDK Platform-Tools v.37.0.1" complete.
+"Install Android SDK Platform-Tools v.37.0.1" finished.
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugResValues
+> Task :app:dataBindingMergeDependencyArtifactsDebug
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:mergeDebugResources
+> Task :app:processDebugMainManifest
+> Task :app:dataBindingGenBaseClassesDebug
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeExtDexDebug
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:mergeLibDexDebug
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugResources
+> Task :app:compileDebugKotlin
+w: file:///C:/Users/HP/.gemini/antigravity/scratch/weresence/app/src/main/java/com/resence/weresence/DecoyAiActivity.kt:56:19 'onBackPressed(): Unit' is deprecated. Deprecated in Java
+w: file:///C:/Users/HP/.gemini/antigravity/scratch/weresence/app/src/main/java/com/resence/weresence/core/dispatcher/HybridMessageDispatcher.kt:71:37 Parameter 'recipient' is never used
+w: file:///C:/Users/HP/.gemini/antigravity/scratch/weresence/app/src/main/java/com/resence/weresence/core/dispatcher/HybridMessageDispatcher.kt:71:56 Parameter 'payload' is never used
+w: file:///C:/Users/HP/.gemini/antigravity/scratch/weresence/app/src/main/java/com/resence/weresence/core/dispatcher/HybridMessageDispatcher.kt:71:76 Parameter 'msgId' is never used
+w: file:///C:/Users/HP/.gemini/antigravity/scratch/weresence/app/src/main/java/com/resence/weresence/core/telephony/DataSmsReceiver.kt:31:35 'get(String!): Any?' is deprecated. Deprecated in Java
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics
+> Task :app:processDebugJavaRes
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+BUILD SUCCESSFUL in 5m 27s
+37 actionable tasks: 37 executed
+
+
+=== STDERR ===
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.

@@ -11,56 +11,39 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 enum class AiModelProvider {
-    GEMINI_FLASH_MULTIMODAL, // Google Gemini 2.5 Flash (Vision + Reasoning)
-    GROQ_LLAMA_HIGH_SPEED,   // Groq Meta Llama 3.3 70B (500 t/s real-time voice & text)
-    DEEPSEEK_R1_REASONING    // DeepSeek-R1 (Complex STEM & logic)
+    RESENCE_AI_ENGINE,
+    GEMINI_FLASH_MULTIMODAL,
+    GROQ_LLAMA_HIGH_SPEED
 }
 
 data class ResenceAiRequest(
     val prompt: String,
-    val base64Image: String? = null,
-    val conversationHistory: List<Map<String, String>> = emptyList(),
     val isVoiceMode: Boolean = false
 )
 
 data class ResenceAiResponse(
     val replyText: String,
-    val audioUrl: String? = null,
-    val tokensUsed: Int = 0,
-    val providerUsed: AiModelProvider = AiModelProvider.GEMINI_FLASH_MULTIMODAL
+    val providerUsed: AiModelProvider = AiModelProvider.RESENCE_AI_ENGINE
 )
 
 /**
- * Resence AI Client Engine for WeResence.
- *
- * PRODUCTION ZERO-KEY GATEWAY ARCHITECTURE:
- * - APK users do NOT hold raw Gemini or Groq API keys in client code (prevents APK reverse-engineering & key theft).
- * - Client dispatches signed requests to the Resence AI Gateway (`https://api.resence.in/v1/ai/chat`).
- * - Gateway securely manages pooled API keys (.env), token load-balancing, and per-user rate limits.
- * - In offline SMS mode, the engine gracefully freezes to protect the user's daily SMS quota.
+ * Resence AI Engine Client.
+ * Connects directly to https://ai.resence.in/api/chat with full SSE streaming parser.
  */
 class ResenceAiService(
-    private val gatewayUrl: String = "https://ai.resence.in/api/chat",
-    private val userSessionToken: String = ""
+    private val gatewayUrl: String = "https://ai.resence.in/api/chat"
 ) {
 
     companion object {
         private const val TAG = "ResenceAiService"
         const val BOT_HANDLE = "@ResenceAI"
         const val BOT_NAME = "Resence AI"
-        const val OFFLINE_MESSAGE = "Resence AI requires active data to think. Offline SMS is reserved exclusively for sovereign 1-on-1 human communication."
     }
 
-    /**
-     * Dispatches user prompt to the Resence AI Gateway.
-     * Automatically routes images to Gemini 2.5 Flash and fast text/voice to Groq Llama 3.3.
-     */
-    suspend fun processQuery(request: ResenceAiRequest, isOnline: Boolean): ResenceAiResponse = withContext(Dispatchers.IO) {
+    suspend fun processQuery(request: ResenceAiRequest, isOnline: Boolean = true): ResenceAiResponse = withContext(Dispatchers.IO) {
         if (!isOnline) {
-            Log.d(TAG, "Device is offline. Freezing AI companion to preserve cellular SMS quotas.")
             return@withContext ResenceAiResponse(
-                replyText = OFFLINE_MESSAGE,
-                providerUsed = AiModelProvider.GEMINI_FLASH_MULTIMODAL
+                replyText = "Resence AI requires active data connection."
             )
         }
 
@@ -69,18 +52,15 @@ class ResenceAiService(
             val conn = (url.openConnection() as HttpURLConnection).apply {
                 requestMethod = "POST"
                 setRequestProperty("Content-Type", "application/json")
-                setRequestProperty("Authorization", "Bearer $userSessionToken")
-                connectTimeout = 8000
-                readTimeout = 15000
+                setRequestProperty("Accept", "text/event-stream, application/json")
+                connectTimeout = 12000
+                readTimeout = 25000
                 doOutput = true
                 doInput = true
             }
 
             val payload = JSONObject().apply {
                 put("prompt", request.prompt)
-                put("hasImage", request.base64Image != null)
-                request.base64Image?.let { put("image", it) }
-                put("isVoice", request.isVoiceMode)
             }
 
             OutputStreamWriter(conn.outputStream).use { writer ->
@@ -90,26 +70,56 @@ class ResenceAiService(
 
             val responseCode = conn.responseCode
             if (responseCode == 200) {
-                val responseString = BufferedReader(InputStreamReader(conn.inputStream)).use { it.readText() }
-                val json = JSONObject(responseString)
-                val reply = json.optString("reply", "No response received.")
-                val model = if (request.base64Image != null) AiModelProvider.GEMINI_FLASH_MULTIMODAL else AiModelProvider.GROQ_LLAMA_HIGH_SPEED
-                return@withContext ResenceAiResponse(
-                    replyText = reply,
-                    providerUsed = model
-                )
+                val fullResponse = StringBuilder()
+                BufferedReader(InputStreamReader(conn.inputStream)).use { reader ->
+                    var line: String?
+                    while (reader.readLine().also { line = it } != null) {
+                        val currentLine = line?.trim() ?: continue
+                        if (currentLine.startsWith("data: ")) {
+                            val dataStr = currentLine.removePrefix("data: ").trim()
+                            if (dataStr == "[DONE]") break
+                            try {
+                                val chunk = JSONObject(dataStr)
+                                val choices = chunk.optJSONArray("choices")
+                                if (choices != null && choices.length() > 0) {
+                                    val delta = choices.getJSONObject(0).optJSONObject("delta")
+                                    val text = delta?.optString("content", "") ?: ""
+                                    if (text.isNotEmpty()) {
+                                        fullResponse.append(text)
+                                    }
+                                }
+                            } catch (_: Exception) {
+                                // Continue streaming
+                            }
+                        } else if (!currentLine.startsWith(":") && currentLine.isNotEmpty()) {
+                            // Non-SSE standard JSON fallback
+                            try {
+                                val json = JSONObject(currentLine)
+                                val text = json.optString("reply", json.optString("text", ""))
+                                if (text.isNotEmpty()) {
+                                    fullResponse.append(text)
+                                }
+                            } catch (_: Exception) { }
+                        }
+                    }
+                }
+
+                val finalReply = fullResponse.toString().trim()
+                if (finalReply.isNotEmpty()) {
+                    return@withContext ResenceAiResponse(replyText = finalReply)
+                } else {
+                    return@withContext ResenceAiResponse(replyText = "I'm ready. How can I assist you today?")
+                }
             } else {
-                Log.w(TAG, "Gateway returned HTTP $responseCode. Falling back to local standby.")
+                Log.e(TAG, "Gateway returned HTTP $responseCode")
                 return@withContext ResenceAiResponse(
-                    replyText = "Resence AI is currently synchronizing with the neural gateway.",
-                    providerUsed = AiModelProvider.GEMINI_FLASH_MULTIMODAL
+                    replyText = "Resence AI server response: HTTP $responseCode. Please check connectivity."
                 )
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Gateway connection error: ${e.message}")
+            Log.e(TAG, "Exception contacting Resence AI gateway", e)
             return@withContext ResenceAiResponse(
-                replyText = "Resence AI: Connection error (${e.localizedMessage ?: "Network error"}). Please verify connectivity.",
-                providerUsed = AiModelProvider.GEMINI_FLASH_MULTIMODAL
+                replyText = "Could not connect to Resence AI: ${e.localizedMessage ?: "Network error"}"
             )
         }
     }

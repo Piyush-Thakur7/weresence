@@ -3,16 +3,14 @@ package com.resence.weresence
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
-import com.resence.weresence.core.ai.ResenceAiRequest
-import com.resence.weresence.core.ai.ResenceAiService
 import com.resence.weresence.core.auth.SupabaseAuthService
 import com.resence.weresence.core.network.ConnectionManager
 import com.resence.weresence.core.network.TransportMode
@@ -22,28 +20,93 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var connectionManager: ConnectionManager
     private val supabaseAuthService = SupabaseAuthService()
-    private val resenceAiService = ResenceAiService()
 
-    private var isOnline = true
+    private lateinit var viewChatsTab: ScrollView
+    private lateinit var viewVaultTab: LinearLayout
+    private lateinit var viewSettingsTab: ScrollView
+
+    private lateinit var tabChats: TextView
+    private lateinit var tabVault: TextView
+    private lateinit var tabSettings: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Enforce Strict OLED Dark Theme
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         super.onCreate(savedInstanceState)
 
-        // Enforce Anti-Screenshot across entire app
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
-
+        // NOTE: Screenshots are PERMITTED on main navigation screen as per user request.
+        // FLAG_SECURE is strictly enforced inside 1-on-1 ChatActivity and PrivateGalleryActivity!
         setContentView(R.layout.activity_main)
 
-        setupHeader()
-        setupCamouflageTest()
+        initViews()
+        setupNavigationTabs()
+        setupChatNavigation()
         setupSupabaseAuth()
-        setupAiCompanion()
+        setupHeader()
         setupNetworkMonitoring()
+    }
+
+    private fun initViews() {
+        viewChatsTab = findViewById(R.id.viewChatsTab)
+        viewVaultTab = findViewById(R.id.viewVaultTab)
+        viewSettingsTab = findViewById(R.id.viewSettingsTab)
+
+        tabChats = findViewById(R.id.tabChats)
+        tabVault = findViewById(R.id.tabVault)
+        tabSettings = findViewById(R.id.tabSettings)
+    }
+
+    private fun setupNavigationTabs() {
+        tabChats.setOnClickListener { switchTab(0) }
+        tabVault.setOnClickListener { switchTab(1) }
+        tabSettings.setOnClickListener { switchTab(2) }
+
+        findViewById<Button>(R.id.btnOpenPrivateGallery).setOnClickListener {
+            val intent = Intent(this, PrivateGalleryActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun switchTab(index: Int) {
+        viewChatsTab.visibility = if (index == 0) View.VISIBLE else View.GONE
+        viewVaultTab.visibility = if (index == 1) View.VISIBLE else View.GONE
+        viewSettingsTab.visibility = if (index == 2) View.VISIBLE else View.GONE
+
+        val activeColor = getColor(R.color.emerald_400)
+        val inactiveColor = getColor(R.color.slate_400)
+
+        tabChats.setTextColor(if (index == 0) activeColor else inactiveColor)
+        tabVault.setTextColor(if (index == 1) activeColor else inactiveColor)
+        tabSettings.setTextColor(if (index == 2) activeColor else inactiveColor)
+    }
+
+    private fun setupChatNavigation() {
+        // Chat 1: Resence AI Companion (Connected to ai.resence.in with SSE streaming)
+        val openAiChat = {
+            val intent = Intent(this, ChatActivity::class.java).apply {
+                putExtra(ChatActivity.EXTRA_PEER_NAME, "Resence AI")
+                putExtra(ChatActivity.EXTRA_IS_AI, true)
+            }
+            startActivity(intent)
+        }
+        findViewById<View>(R.id.chatItemResenceAi).setOnClickListener { openAiChat() }
+        findViewById<View>(R.id.storyResenceAi).setOnClickListener { openAiChat() }
+
+        // Chat 2: Sovereign Peer Channel
+        val openPeerChat = {
+            val intent = Intent(this, ChatActivity::class.java).apply {
+                putExtra(ChatActivity.EXTRA_PEER_NAME, "Piyush Singh (Founder)")
+                putExtra(ChatActivity.EXTRA_IS_AI, false)
+            }
+            startActivity(intent)
+        }
+        findViewById<View>(R.id.chatItemPiyush).setOnClickListener { openPeerChat() }
+        findViewById<View>(R.id.storyPiyush).setOnClickListener { openPeerChat() }
+
+        // Story 3: Vault Shortcut
+        findViewById<View>(R.id.storyVault).setOnClickListener {
+            val intent = Intent(this, PrivateGalleryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupHeader() {
@@ -54,9 +117,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-    }
 
-    private fun setupCamouflageTest() {
         findViewById<Button>(R.id.btnTestCamouflage).setOnClickListener {
             val intent = Intent(this, DecoyAiActivity::class.java)
             startActivity(intent)
@@ -74,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         btnSendOtp.setOnClickListener {
             val phone = etPhoneNumber.text.toString().trim()
             if (phone.isEmpty()) {
-                tvAuthResult.text = "Please enter a valid phone number with country code (e.g. +91...)"
+                tvAuthResult.text = "Please enter phone with country code (e.g. +919557740764)"
                 return@setOnClickListener
             }
 
@@ -90,7 +151,7 @@ class MainActivity : AppCompatActivity() {
                 result.fold(
                     onSuccess = {
                         layoutOtpVerify.visibility = View.VISIBLE
-                        tvAuthResult.text = "✅ OTP requested! Enter code below (or use test OTP if configured in Supabase)."
+                        tvAuthResult.text = "✅ OTP requested! Enter code below."
                     },
                     onFailure = { error ->
                         tvAuthResult.text = "❌ Error: ${error.message}"
@@ -127,31 +188,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAiCompanion() {
-        val etPrompt = findViewById<EditText>(R.id.etAiPrompt)
-        val btnAskAi = findViewById<Button>(R.id.btnAskAi)
-        val tvResponse = findViewById<TextView>(R.id.tvAiResponse)
-
-        btnAskAi.setOnClickListener {
-            val query = etPrompt.text.toString().trim()
-            if (query.isEmpty()) return@setOnClickListener
-
-            btnAskAi.isEnabled = false
-            btnAskAi.text = "Thinking..."
-            tvResponse.text = "Connecting to Resence AI..."
-
-            lifecycleScope.launch {
-                val response = resenceAiService.processQuery(
-                    ResenceAiRequest(prompt = query),
-                    isOnline = isOnline
-                )
-                btnAskAi.isEnabled = true
-                btnAskAi.text = "Ask AI Companion"
-                tvResponse.text = response.replyText
-            }
-        }
-    }
-
     private fun setupNetworkMonitoring() {
         val tvNetworkStatus = findViewById<TextView>(R.id.tvNetworkStatus)
 
@@ -160,12 +196,10 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 when (mode) {
                     TransportMode.INTERNET_HIGH_SPEED -> {
-                        isOnline = true
                         tvNetworkStatus.text = "🟢 ONLINE"
                     }
                     TransportMode.STEALTH_DATA_SMS -> {
-                        isOnline = false
-                        tvNetworkStatus.text = "📶 STEALTH SMS"
+                        tvNetworkStatus.text = "📶 STEALTH"
                     }
                 }
             }

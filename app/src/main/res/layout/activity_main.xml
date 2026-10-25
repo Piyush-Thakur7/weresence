@@ -17,6 +17,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(( 🔒∞ ))"
+            android:textColor="@color/emerald_400"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
             android:id="@+id/tvAppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,16 +65,15 @@
             android:text="🔒 Lock"
             android:textColor="@color/slate_400"
             android:textSize="12sp"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="6dp" />
     </LinearLayout>
 
-    <!-- Main Scrollable Content -->
+    <!-- TAB 1: CHATS VIEW -->
     <ScrollView
-        android:id="@+id/scrollViewContent"
+        android:id="@+id/viewChatsTab"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="16dp"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/headerLayout"
         app:layout_constraintBottom_toTopOf="@id/bottomNav">
@@ -75,63 +83,290 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Security Status Banner -->
+            <!-- Active Sovereign Peers Row -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Peer 1: Resence AI -->
+                    <LinearLayout
+                        android:id="@+id/storyResenceAi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginEnd="16dp">
+
+                        <TextView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:gravity="center"
+                            android:text="🤖"
+                            android:textSize="22sp"
+                            android:background="@drawable/bg_badge_emerald" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Resence AI"
+                            android:textColor="@color/slate_100"
+                            android:textSize="11sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+
+                    <!-- Peer 2: Piyush Singh (Founder) -->
+                    <LinearLayout
+                        android:id="@+id/storyPiyush"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginEnd="16dp">
+
+                        <TextView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:gravity="center"
+                            android:text="👑"
+                            android:textSize="22sp"
+                            android:background="@drawable/bg_pin_button" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Piyush (You)"
+                            android:textColor="@color/slate_100"
+                            android:textSize="11sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+
+                    <!-- Peer 3: Sovereign Vault -->
+                    <LinearLayout
+                        android:id="@+id/storyVault"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:gravity="center"
+                            android:text="🔒"
+                            android:textSize="22sp"
+                            android:background="@drawable/bg_pin_button" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Private Vault"
+                            android:textColor="@color/slate_100"
+                            android:textSize="11sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/slate_800" />
+
+            <!-- CHAT LIST -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/bg_card_dark"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="8dp">
 
+                <!-- Chat Item 1: Resence AI -->
                 <LinearLayout
+                    android:id="@+id/chatItemResenceAi"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="72dp"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp"
+                    android:background="?attr/selectableItemBackground">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🛡️ FLAG_SECURE Active"
-                        android:textColor="@color/emerald_400"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:text="🤖"
+                        android:textSize="22sp"
+                        android:background="@drawable/bg_badge_emerald" />
 
-                    <View
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1" />
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Resence AI"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Live ai.resence.in companion · Tap to chat"
+                            android:textColor="@color/emerald_400"
+                            android:textSize="12sp"
+                            android:singleLine="true" />
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dual-PIN Active"
-                        android:textColor="@color/slate_400"
-                        android:textSize="11sp" />
+                        android:text="1 NEW"
+                        android:textColor="@color/emerald_400"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_badge_emerald"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp" />
                 </LinearLayout>
 
-                <TextView
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Screenshots, screen recording, and memory dumping are strictly blocked at Android OS kernel level. Entering PIN 0000 switches into harmless Camouflage Decoy Mode."
-                    android:textColor="@color/slate_400"
-                    android:textSize="12sp"
-                    android:layout_marginTop="6dp" />
+                    android:layout_height="1dp"
+                    android:background="@color/slate_900" />
 
-                <Button
-                    android:id="@+id/btnTestCamouflage"
+                <!-- Chat Item 2: Sovereign Peer -->
+                <LinearLayout
+                    android:id="@+id/chatItemPiyush"
                     android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:text="Test Decoy Mode (0000 ➜ ai.resence.in)"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:backgroundTint="@color/slate_800"
-                    android:layout_marginTop="12dp" />
+                    android:layout_height="72dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp"
+                    android:background="?attr/selectableItemBackground">
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:text="🔒"
+                        android:textSize="22sp"
+                        android:background="@drawable/bg_pin_button" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sovereign Peer Channel"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="E2EE Envelope active · Zero cloud compression"
+                            android:textColor="@color/slate_400"
+                            android:textSize="12sp"
+                            android:singleLine="true" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="E2EE"
+                        android:textColor="@color/slate_400"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
             </LinearLayout>
 
-            <!-- Supabase Phone Auth Testing Card -->
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- TAB 2: VAULT / GALLERY VIEW -->
+    <LinearLayout
+        android:id="@+id/viewVaultTab"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🛡️"
+            android:textSize="52sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private Sovereign Vault"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Screenshots and screen recording are strictly prohibited inside the private gallery and 1-on-1 chats to protect sovereign media."
+            android:textColor="@color/slate_400"
+            android:textSize="13sp"
+            android:textAlignment="center"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/btnOpenPrivateGallery"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="Open Private Gallery (Protected)"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:backgroundTint="@color/emerald_500"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
+
+    <!-- TAB 3: SETTINGS & AUTH VIEW -->
+    <ScrollView
+        android:id="@+id/viewSettingsTab"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:fillViewport="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Supabase Phone Auth Card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -152,7 +387,7 @@
                     android:id="@+id/tvSupabaseStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Project: zmpydrioaaofgtoweai (Ready for testing)"
+                    android:text="Project: zmpydrioaaoafgtoweai (Ready for testing)"
                     android:textColor="@color/slate_400"
                     android:textSize="11sp"
                     android:layout_marginTop="4dp" />
@@ -161,7 +396,7 @@
                     android:id="@+id/etPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
-                    android:hint="Phone (e.g. +919876543210)"
+                    android:hint="Phone (e.g. +919557740764)"
                     android:textColorHint="@color/slate_700"
                     android:textColor="@color/white"
                     android:textSize="13sp"
@@ -221,7 +456,7 @@
                     android:layout_marginTop="8dp" />
             </LinearLayout>
 
-            <!-- Resence AI Companion Card -->
+            <!-- Camouflage Settings -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -233,7 +468,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🤖 Resence AI Sovereign Companion"
+                    android:text="🎭 Camouflage Decoy System"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -241,47 +476,26 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Connected to ai.resence.in engine. Sub-second speed."
+                    android:text="Entering PIN 0000 transforms WeResence into harmless Resence AI (ai.resence.in). Master PIN 1234 unlocks this sovereign vault."
                     android:textColor="@color/slate_400"
-                    android:textSize="11sp"
-                    android:layout_marginTop="4dp" />
-
-                <EditText
-                    android:id="@+id/etAiPrompt"
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
-                    android:hint="Ask Resence AI anything..."
-                    android:textColorHint="@color/slate_700"
-                    android:textColor="@color/white"
-                    android:textSize="13sp"
-                    android:background="@color/slate_900"
-                    android:paddingHorizontal="12dp"
-                    android:layout_marginTop="10dp" />
+                    android:textSize="12sp"
+                    android:layout_marginTop="6dp" />
 
                 <Button
-                    android:id="@+id/btnAskAi"
+                    android:id="@+id/btnTestCamouflage"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
-                    android:text="Ask AI Companion"
+                    android:text="Test Decoy Mode (0000 ➜ ai.resence.in)"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:backgroundTint="@color/slate_800"
-                    android:layout_marginTop="8dp" />
-
-                <TextView
-                    android:id="@+id/tvAiResponse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/slate_100"
-                    android:textSize="12sp"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="12dp" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation Bar -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
@@ -292,32 +506,38 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
+            android:id="@+id/tabChats"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="💬 Chats"
             android:textColor="@color/emerald_400"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:background="?attr/selectableItemBackground" />
 
         <TextView
+            android:id="@+id/tabVault"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="🛡️ Vault"
             android:textColor="@color/slate_400"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:background="?attr/selectableItemBackground" />
 
         <TextView
+            android:id="@+id/tabSettings"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="📶 Telephony"
+            android:text="⚙️ Settings"
             android:textColor="@color/slate_400"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:background="?attr/selectableItemBackground" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
